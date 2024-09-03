@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "421014428564",
+    "firebase_url": "https://kidzcare-97f3c-default-rtdb.firebaseio.com",
+    "project_id": "kidzcare-97f3c",
+    "storage_bucket": "kidzcare-97f3c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421014428564:android:2655feee0c997b51c88d81",
+        "android_client_info": {
+          "package_name": "com.kidzcare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlk2YyXNZ3XzK7bba9BGt3dAV0PhP_yMM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
