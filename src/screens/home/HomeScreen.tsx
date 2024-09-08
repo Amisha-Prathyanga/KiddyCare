@@ -30,21 +30,75 @@ const HomeScreen = () => {
       <ContentWrap paddingLeft={15} paddingRight={15}>
         <Spacer marginTop={28} />
         <Text style={styles.welcomeText}>
-          Welcome Back <Text style={styles.welcomeUser}>Yelani!</Text>
+          Welcome Back <Text style={styles.welcomeUser}>Amisha!</Text>
         </Text>
         <Spacer marginTop={28} />
-        <View style={styles.alertContainer}>
-          <ContentWrap paddingLeft={25} paddingTop={25} paddingRight={25}>
-            <AlertRow isFall time="10:00 am" />
-          </ContentWrap>
-        </View>
-        <Spacer marginTop={10} />
-        <View style={styles.alertContainer}>
-          <ContentWrap paddingLeft={25} paddingTop={25} paddingRight={25}>
-            <AlertRow isFall={false} time="10:00 am" />
-          </ContentWrap>
-        </View>
-        <Spacer marginTop={60} />
+        <Row style={styles.row}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() =>
+              navigation.navigate(routeNames.detectionHistory, {
+                isCry: true,
+                firebaseDirectory: 'cry_predictions',
+              })
+            }>
+            <Image
+              source={require('../../assets/image/MarkAttendance.png')}
+              style={styles.actionImage}
+            />
+            <Spacer marginTop={10} />
+            <Text style={styles.actionText}>Cry Detections</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() =>
+              navigation.navigate(routeNames.detectionHistory, {
+                isEmotion: true,
+                firebaseDirectory: 'cry_predictions',
+              })
+            }>
+            <Image
+              source={require('../../assets/image/AlertHistory.png')}
+              style={styles.actionImage}
+            />
+            <Spacer marginTop={10} />
+            <Text style={styles.actionText}>Emotion Detections</Text>
+          </TouchableOpacity>
+        </Row>
+        <Spacer marginTop={30} />
+        <Row style={styles.row}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() =>
+              navigation.navigate(routeNames.detectionHistory, {
+                isRange: true,
+              })
+            }>
+            <Image
+              source={require('../../assets/image/AlertHistory.png')}
+              style={styles.actionImage}
+            />
+            <Spacer marginTop={10} />
+            <Text style={styles.actionText}>Range Detections</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() =>
+              navigation.navigate(routeNames.detectionHistory, {
+                isFall: true,
+                firebaseDirectory: 'fall_detection',
+              })
+            }>
+            <Image
+              source={require('../../assets/image/AlertHistory.png')}
+              style={styles.actionImage}
+            />
+            <Spacer marginTop={10} />
+            <Text style={styles.actionText}>Fall Detections</Text>
+          </TouchableOpacity>
+        </Row>
+        <Spacer marginTop={30} />
+
         <Row style={styles.row}>
           <TouchableOpacity
             style={styles.actionButton}
@@ -55,16 +109,6 @@ const HomeScreen = () => {
             />
             <Spacer marginTop={10} />
             <Text style={styles.actionText}>Mark Attendance</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => navigation.navigate(routeNames.alertHistory)}>
-            <Image
-              source={require('../../assets/image/AlertHistory.png')}
-              style={styles.actionImage}
-            />
-            <Spacer marginTop={10} />
-            <Text style={styles.actionText}>Alert History</Text>
           </TouchableOpacity>
         </Row>
         <Spacer marginTop={30} />
@@ -80,6 +124,7 @@ const HomeScreen = () => {
             // onPress={() => navigation.navigate(stackNames.tabStack)}
           />
         </View>
+        <Spacer marginTop={30} />
       </ContentWrap>
     </ScrollViewWrapper>
   );

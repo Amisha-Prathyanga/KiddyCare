@@ -7,35 +7,40 @@ import {screenOptions} from '../config/navigationConstants';
 import AlertHistory from '../../screens/alertHistory/AlertHistory';
 import MarkAttendance from '../../screens/markAttendance/MarkAttendance';
 import NewPage from '../../screens/new/NewPage';
-
+import DetectionHistory from '../../screens/detectionHistory/DetectionHistory';
+import HomeStack from './HomeStack';
+import {stackNames} from '../config/stackNames';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const Tab = createBottomTabNavigator();
 
 const TabStack = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        unmountOnBlur: true,
+      }}>
       <Tab.Screen
-        name={routeNames.homeRoute}
-        component={HomeScreen}
+        name={stackNames.homeStack}
+        component={HomeStack}
         //@ts-ignore
-        options={screenOptions}
+        options={{
+          ...screenOptions,
+          tabBarIcon: ({color, size}) => (
+            <Icon size={size} name="home" color={color} />
+          ),
+        }}
       />
-      <Tab.Screen
-        name={routeNames.alertHistory}
-        component={AlertHistory}
-        //@ts-ignore
-        options={screenOptions}
-      />
+
       <Tab.Screen
         name={routeNames.markAttendance}
         component={MarkAttendance}
         //@ts-ignore
-        options={screenOptions}
-      />
-      <Tab.Screen
-        name={routeNames.newPage}
-        component={NewPage}
-        //@ts-ignore
-        options={screenOptions}
+        options={{
+          ...screenOptions,
+          tabBarIcon: ({color, size}) => (
+            <Icon size={size} name="account-check" color={color} />
+          ),
+        }}
       />
     </Tab.Navigator>
   );

@@ -15,6 +15,11 @@ import {theme} from '../../../theme/theme';
 
 interface AlertRowProps {
   isFall?: boolean;
+  isCry?: boolean;
+  isRange?: boolean;
+  isEmotion?: boolean;
+  cryReason?: string;
+  isACry?: boolean;
   time: string;
   viewImageVisible?: boolean;
   onViewImagePress?: () => void; // Optional callback for button press
@@ -22,8 +27,14 @@ interface AlertRowProps {
 
 const AlertRow: React.FC<AlertRowProps> = ({
   isFall,
+  isCry,
+  isRange,
+  isEmotion,
+  cryReason,
+  isACry,
   time,
   viewImageVisible,
+
   onViewImagePress,
 }) => {
   const imageSource: ImageSourcePropType = isFall
@@ -35,10 +46,31 @@ const AlertRow: React.FC<AlertRowProps> = ({
       <Row style={styles.contentRow}>
         <Image source={imageSource} style={styles.image} />
         <View>
-          <Text style={styles.alertText}>
-            {isFall ? 'Fall detected' : 'Child out of range detected'}
+          <Text
+            style={[
+              styles.alertText,
+
+              {
+                color: theme.red,
+              },
+            ]}>
+            {isFall
+              ? 'Fall detected'
+              : isCry
+              ? isACry
+                ? 'Cry detected!'
+                : 'Unknown Sound'
+              : isRange
+              ? 'sds'
+              : isEmotion
+              ? 'Emotion Detected'
+              : 'Child out of range detected'}
           </Text>
-          <Spacer marginTop={10} />
+          {isCry && cryReason && (
+            <Text style={styles.alertText}>{cryReason}</Text>
+          )}
+
+          <Spacer marginTop={5} />
           <Text style={styles.timeText}>{time}</Text>
         </View>
       </Row>

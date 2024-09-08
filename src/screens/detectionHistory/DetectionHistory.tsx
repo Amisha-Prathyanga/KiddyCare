@@ -11,13 +11,23 @@ import DateRow from '../../components/features/alertHistory/dateRow';
 import Spacer from '../../components/common/Spacer';
 import database from '@react-native-firebase/database';
 import Modal from 'react-native-modal';
-import {convertTo12HourFormat} from '../../utils/helpers';
-const AlertHistory = () => {
+import {
+  convertISOTo12HourFormat,
+  convertTo12HourFormat,
+} from '../../utils/helpers';
+
+const DetectionHistory = ({route}: any) => {
   const [fallDetections, setFallDetections] = useState([]);
+
+  console.log(route);
 
   useEffect(() => {
     database()
-      .ref('/kiddycare/fall_detection')
+      .ref(
+        route.params.isRange
+          ? '/alert'
+          : `/kiddycare/${route.params.firebaseDirectory}`,
+      )
       .on('value', snapshot => {
         console.log('User data: ', snapshot.val());
         const array = Object.values(snapshot.val());
@@ -36,32 +46,38 @@ const AlertHistory = () => {
       <Header />
       <ContentWrap paddingTop={21} paddingLeft={16} paddingRight={16}>
         <View>
-          <DateRow theme={theme} day="Today" />
-          {fallDetections.map(data => (
-            <View style={styles.alertBox}>
-              <AlertRow
-                isFall
-                viewImageVisible
-                time={`${data.date}-${convertTo12HourFormat(data.time)}`}
-                onViewImagePress={() => {
-                  setModalVisible(true);
-                  // console.log(data.image);
-                  // setImage(data.image);
-                  setImage('https://i.postimg.cc/BbNRBv4G/Picture32.png');
-                }}
-              />
-            </View>
-          ))}
+          {fallDetections.map((data, index) => {
+            console.log(data.reason);
+
+            return (
+              <View style={styles.alertBox} key={index}>
+                <AlertRow
+                  cryReason={data.reason ?? undefined}
+                  isFall={route.params.isFall ?? undefined}
+                  isCry={route.params.isCry ?? undefined}
+                  isACry={data.is_cry ?? undefined}
+                  isEmotion={route.params.isEmotion ?? undefined}
+                  isRange={route.params.isRange ?? undefined}
+                  viewImageVisible
+                  time={
+                    data.date !== undefined && data.time !== undefined
+                      ? `${data.date}-${convertTo12HourFormat(data.time)}`
+                      : data.timestamp
+                      ? convertISOTo12HourFormat(data.timestamp)
+                      : ''
+                  }
+                  onViewImagePress={() => {
+                    setModalVisible(true);
+                    // console.log(data.image);
+                    // setImage(data.image);
+                    setImage('https://i.postimg.cc/BbNRBv4G/Picture32.png');
+                  }}
+                />
+              </View>
+            );
+          })}
         </View>
         <Spacer marginTop={20} />
-        <View>
-          <DateRow theme={theme} day="Yesterday" />
-          {[1, 3, 4, , 5].map(() => (
-            <View style={styles.alertBox}>
-              <AlertRow time="10:00 am" />
-            </View>
-          ))}
-        </View>
       </ContentWrap>
       <Modal
         style={{
@@ -94,7 +110,7 @@ const AlertHistory = () => {
   );
 };
 
-export default AlertHistory;
+export default DetectionHistory;
 
 const styles = StyleSheet.create({
   alertBox: {

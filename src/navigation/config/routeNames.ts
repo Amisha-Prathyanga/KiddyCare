@@ -4,6 +4,7 @@ export const routeNames = {
   onbaordingRouteOne: 'onbaordingRouteOne',
   onbaordingRouteTwo: 'onbaordingRouteTwo',
   alertHistory: 'alertHistory',
-  markAttendance: 'markAttendance',
+  markAttendance: 'Mark Attendance',
   newPage: 'newPage',
+  detectionHistory: 'DetectionHistory',
 };
