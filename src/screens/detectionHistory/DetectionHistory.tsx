@@ -37,6 +37,16 @@ const DetectionHistory = ({route}: any) => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [image, setImage] = useState('');
+  const emotionEmojiMap = {
+    Sad: '😢',
+    Happy: '😊',
+    Angry: '😠',
+    Surprised: '😮',
+    Neutral: '😐',
+    Frustrated: '😤',
+    // Add more mappings as needed
+  };
+  const attentionNeededEmotions = ['Sad', 'Frustrated', 'Angry'];
 
   return (
     <ScrollViewWrapper
@@ -57,8 +67,16 @@ const DetectionHistory = ({route}: any) => {
                   isCry={route.params.isCry ?? undefined}
                   isACry={data.is_cry ?? undefined}
                   isEmotion={route.params.isEmotion ?? undefined}
+                  // Display the overall summary's leading emotion
+                  overallEmotionType={
+                    route.params.isEmotion
+                      ? emotionEmojiMap[data.overall_summary?.leading_emotion] +
+                        ` (${data.overall_summary?.leading_emotion})`
+                      : undefined
+                  }
+                  emotionType={undefined} // Removed as we'll handle emotions separately below
                   isRange={route.params.isRange ?? undefined}
-                  viewImageVisible
+                  viewImageVisible={!route.params.isEmotion} // Hide image view if emotions are present
                   time={
                     data.date !== undefined && data.time !== undefined
                       ? `${data.date}-${convertTo12HourFormat(data.time)}`
@@ -68,11 +86,34 @@ const DetectionHistory = ({route}: any) => {
                   }
                   onViewImagePress={() => {
                     setModalVisible(true);
-                    // console.log(data.image);
-                    // setImage(data.image);
-                    setImage('https://i.postimg.cc/BbNRBv4G/Picture32.png');
+                    setImage(data.snapshot_url);
                   }}
                 />
+
+                {/* Display emotions with current date and time using emojis */}
+                {data.summaries?.map((summary, idx) => {
+                  // Get the current date and time
+                  const currentTime = new Date();
+                  // Add 10 seconds for each chunk
+                  currentTime.setSeconds(currentTime.getSeconds() + idx * 10);
+
+                  // Determine if attention is needed
+                  const isAttentionNeeded = attentionNeededEmotions.includes(
+                    summary.leading_emotion,
+                  );
+
+                  return (
+                    <View key={idx}>
+                      <Text>
+                        {isAttentionNeeded ? '⚠️ Attention needed! ' : ''}
+                        {currentTime.toLocaleTimeString()} :{' '}
+                        {emotionEmojiMap[summary.leading_emotion] ??
+                          summary.leading_emotion}{' '}
+                        ({summary.leading_emotion})
+                      </Text>
+                    </View>
+                  );
+                })}
               </View>
             );
           })}

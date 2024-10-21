@@ -43,7 +43,7 @@ const HomeScreen = () => {
               })
             }>
             <Image
-              source={require('../../assets/image/MarkAttendance.png')}
+              source={require('../../assets/image/cry1.png')}
               style={styles.actionImage}
             />
             <Spacer marginTop={10} />
@@ -54,11 +54,11 @@ const HomeScreen = () => {
             onPress={() =>
               navigation.navigate(routeNames.detectionHistory, {
                 isEmotion: true,
-                firebaseDirectory: 'cry_predictions',
+                firebaseDirectory: 'summaries',
               })
             }>
             <Image
-              source={require('../../assets/image/AlertHistory.png')}
+              source={require('../../assets/image/emotion1.png')}
               style={styles.actionImage}
             />
             <Spacer marginTop={10} />
@@ -75,7 +75,7 @@ const HomeScreen = () => {
               })
             }>
             <Image
-              source={require('../../assets/image/AlertHistory.png')}
+              source={require('../../assets/image/range.png')}
               style={styles.actionImage}
             />
             <Spacer marginTop={10} />
@@ -90,7 +90,7 @@ const HomeScreen = () => {
               })
             }>
             <Image
-              source={require('../../assets/image/AlertHistory.png')}
+              source={require('../../assets/image/Fall.png')}
               style={styles.actionImage}
             />
             <Spacer marginTop={10} />

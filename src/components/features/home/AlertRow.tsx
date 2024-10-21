@@ -18,6 +18,7 @@ interface AlertRowProps {
   isCry?: boolean;
   isRange?: boolean;
   isEmotion?: boolean;
+  emotionType?: string;
   cryReason?: string;
   isACry?: boolean;
   time: string;
@@ -30,6 +31,7 @@ const AlertRow: React.FC<AlertRowProps> = ({
   isCry,
   isRange,
   isEmotion,
+  emotionType,
   cryReason,
   isACry,
   time,
@@ -68,6 +70,9 @@ const AlertRow: React.FC<AlertRowProps> = ({
           </Text>
           {isCry && cryReason && (
             <Text style={styles.alertText}>{cryReason}</Text>
+          )}
+           {isEmotion && emotionType && (
+            <Text style={styles.alertText}>{emotionType}</Text>
           )}
 
           <Spacer marginTop={5} />
