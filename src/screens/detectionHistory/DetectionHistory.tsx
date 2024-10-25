@@ -11,15 +11,17 @@ import DateRow from '../../components/features/alertHistory/dateRow';
 import Spacer from '../../components/common/Spacer';
 import database from '@react-native-firebase/database';
 import Modal from 'react-native-modal';
+import {PieChart} from 'react-native-chart-kit';
+import {Dimensions} from 'react-native';
 import {
   convertISOTo12HourFormat,
   convertTo12HourFormat,
 } from '../../utils/helpers';
 
+const screenWidth = Dimensions.get('window').width;
+
 const DetectionHistory = ({route}: any) => {
   const [fallDetections, setFallDetections] = useState([]);
-
-  console.log(route);
 
   useEffect(() => {
     database()
@@ -29,7 +31,6 @@ const DetectionHistory = ({route}: any) => {
           : `/kiddycare/${route.params.firebaseDirectory}`,
       )
       .on('value', snapshot => {
-        console.log('User data: ', snapshot.val());
         const array = Object.values(snapshot.val());
         setFallDetections(() => array);
       });
@@ -37,6 +38,15 @@ const DetectionHistory = ({route}: any) => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [image, setImage] = useState('');
+  const emotionColorMap = {
+    Sad: '#FF6B6B',
+    Happy: '#4CAF50',
+    Angry: '#FF8A65',
+    Surprised: '#FFEB3B',
+    Neutral: '#9E9E9E',
+    Frustrated: '#FF5722',
+  };
+
   const emotionEmojiMap = {
     Sad: '😢',
     Happy: '😊',
@@ -44,9 +54,7 @@ const DetectionHistory = ({route}: any) => {
     Surprised: '😮',
     Neutral: '😐',
     Frustrated: '😤',
-    // Add more mappings as needed
   };
-  const attentionNeededEmotions = ['Sad', 'Frustrated', 'Angry'];
 
   return (
     <ScrollViewWrapper
@@ -56,67 +64,70 @@ const DetectionHistory = ({route}: any) => {
       <Header />
       <ContentWrap paddingTop={21} paddingLeft={16} paddingRight={16}>
         <View>
-          {fallDetections.map((data, index) => {
-            console.log(data.reason);
+          {fallDetections.map((data, index) => (
+            <View style={styles.alertBox} key={index}>
+              <AlertRow
+                cryReason={data.reason ?? undefined}
+                isFall={route.params.isFall ?? undefined}
+                isCry={route.params.isCry ?? undefined}
+                isACry={data.is_cry ?? undefined}
+                isEmotion={route.params.isEmotion ?? undefined}
+                overallEmotionType={
+                  route.params.isEmotion
+                    ? emotionEmojiMap[data.overall_summary?.leading_emotion] +
+                      ` (${data.overall_summary?.leading_emotion})`
+                    : undefined
+                }
+                isRange={route.params.isRange ?? undefined}
+                viewImageVisible={!route.params.isEmotion}
+                time={
+                  data.date !== undefined && data.time !== undefined
+                    ? `${data.date}-${convertTo12HourFormat(data.time)}`
+                    : data.timestamp
+                    ? convertISOTo12HourFormat(data.timestamp)
+                    : ''
+                }
+                onViewImagePress={() => {
+                  setModalVisible(true);
+                  setImage(data.snapshot_url);
+                }}
+              />
 
-            return (
-              <View style={styles.alertBox} key={index}>
-                <AlertRow
-                  cryReason={data.reason ?? undefined}
-                  isFall={route.params.isFall ?? undefined}
-                  isCry={route.params.isCry ?? undefined}
-                  isACry={data.is_cry ?? undefined}
-                  isEmotion={route.params.isEmotion ?? undefined}
-                  // Display the overall summary's leading emotion
-                  overallEmotionType={
-                    route.params.isEmotion
-                      ? emotionEmojiMap[data.overall_summary?.leading_emotion] +
-                        ` (${data.overall_summary?.leading_emotion})`
-                      : undefined
-                  }
-                  emotionType={undefined} // Removed as we'll handle emotions separately below
-                  isRange={route.params.isRange ?? undefined}
-                  viewImageVisible={!route.params.isEmotion} // Hide image view if emotions are present
-                  time={
-                    data.date !== undefined && data.time !== undefined
-                      ? `${data.date}-${convertTo12HourFormat(data.time)}`
-                      : data.timestamp
-                      ? convertISOTo12HourFormat(data.timestamp)
-                      : ''
-                  }
-                  onViewImagePress={() => {
-                    setModalVisible(true);
-                    setImage(data.snapshot_url);
-                  }}
-                />
+              {/* Display pie chart for each emotion summary */}
+              {data.summaries?.map((summary, idx) => {
+                // Create pie chart data with emotion percentage
+                const chartData = summary.emotions.map(emotion => ({
+                  name: `${emotion.type} (${
+                    emotionEmojiMap[emotion.type] ?? ''
+                  })`,
+                  population: emotion.percentage,
+                  color: emotionColorMap[emotion.type] || '#000000',
+                  legendFontColor: '#7F7F7F',
+                  legendFontSize: 12,
+                }));
 
-                {/* Display emotions with current date and time using emojis */}
-                {data.summaries?.map((summary, idx) => {
-                  // Get the current date and time
-                  const currentTime = new Date();
-                  // Add 10 seconds for each chunk
-                  currentTime.setSeconds(currentTime.getSeconds() + idx * 10);
-
-                  // Determine if attention is needed
-                  const isAttentionNeeded = attentionNeededEmotions.includes(
-                    summary.leading_emotion,
-                  );
-
-                  return (
-                    <View key={idx}>
-                      <Text>
-                        {isAttentionNeeded ? '⚠️ Attention needed! ' : ''}
-                        {currentTime.toLocaleTimeString()} :{' '}
-                        {emotionEmojiMap[summary.leading_emotion] ??
-                          summary.leading_emotion}{' '}
-                        ({summary.leading_emotion})
-                      </Text>
-                    </View>
-                  );
-                })}
-              </View>
-            );
-          })}
+                return (
+                  <View key={idx} style={{alignItems: 'center', marginTop: 10}}>
+                    <Text style={{marginBottom: 10}}>
+                      {convertISOTo12HourFormat(summary.timestamp)}
+                    </Text>
+                    <PieChart
+                      data={chartData}
+                      width={screenWidth * 0.8}
+                      height={150}
+                      chartConfig={{
+                        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                      }}
+                      accessor={'population'}
+                      backgroundColor={'transparent'}
+                      paddingLeft={'15'}
+                      absolute
+                    />
+                  </View>
+                );
+              })}
+            </View>
+          ))}
         </View>
         <Spacer marginTop={20} />
       </ContentWrap>
@@ -156,9 +167,10 @@ export default DetectionHistory;
 const styles = StyleSheet.create({
   alertBox: {
     width: 350,
-    height: 95,
+    height: 150,
     paddingTop: 21,
     paddingLeft: 25,
     borderBottomWidth: 1,
+    marginBottom: 15,
   },
 });
