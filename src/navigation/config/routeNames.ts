@@ -8,4 +8,9 @@ export const routeNames = {
   newPage: 'newPage',
   detectionHistory: 'DetectionHistory',
   rangeHistory: 'RangeHistory',
+  dailySummaryReport: 'DailySummaryReport',
+  dailyFallSummaryReport: 'DailyFallSummaryReport',
+  emotionSummaryReport: 'EmotionSummaryReport',
+  rangeDetectionReport: 'RangeDetectionReport',
+  reportNavigationPage: 'ReportNavigationPage',
 };

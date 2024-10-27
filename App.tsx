@@ -11,6 +11,9 @@ function App(): React.JSX.Element {
       .then(msg => {
         console.log('Meessge', msg);
       });
+    messaging().onMessage(res => {
+      console.log('m', res);
+    });
   }, []);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
