@@ -26,6 +26,7 @@ const History = ({date, alertsArray}) => {
               key={index}
               type={alert.type}
               time={formatTime(alert.timestamp)}
+              image={alert.image}
             />
           );
         })}

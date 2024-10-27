@@ -4,7 +4,7 @@ import colors from '../../../thems';
 import {Image} from 'react-native-elements';
 import CustomButton from './CustomButton';
 
-const AlertData = ({type, time}) => {
+const AlertData = ({type, time, image}) => {
   return (
     <View style={styles.alert}>
       <View>
@@ -23,13 +23,11 @@ const AlertData = ({type, time}) => {
         </Text>
         <Text style={styles.time}>{time}</Text>
       </View>
-      {type === 'fall' ? (
+      {type === 'range' ? (
         <View style={styles.buttonWrap}>
-          <CustomButton title={'View Image'} />
+          <CustomButton title={'Image'} />
         </View>
-      ) : (
-        ''
-      )}
+      ) : null}
     </View>
   );
 };

@@ -11,7 +11,7 @@ const AlertService = {
         .once('value');
       if (snapshot.exists()) {
         const alerts = snapshot.val();
-        console.log('All  alerts:', alerts);
+        
         return alerts;
       } else {
         console.log('No alerts  found.');

@@ -13,7 +13,7 @@ const RangeHistory = () => {
   const handlealert = async () => {
     try {
       const result = await AlertService.getAlerts();
-      console.log('Raw Alerts Data:', result);
+      //console.log('Raw Alerts Data:', result);
 
       const formatDate = date => date.toISOString().split('T')[0];
       const categorizedData = {};

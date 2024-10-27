@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
-import colors from '../../thems';
+import colors from '../../../thems';
 import {Image} from 'react-native-elements';
 
 const Alert = ({type, time}) => {
@@ -11,8 +11,8 @@ const Alert = ({type, time}) => {
           style={styles.image}
           source={
             type === 'fall'
-              ? require('../assets/icons8-falling-person-48.png')
-              : require('../assets/icons8-locked-outside-48.png')
+              ? require('../../assets/image/icons8-falling-person-48.png')
+              : require('../../assets/image/icons8-locked-outside-48.png')
           }
         />
       </View>

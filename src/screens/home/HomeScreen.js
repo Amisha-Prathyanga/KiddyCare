@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Image,
   StyleSheet,
@@ -22,8 +22,63 @@ import useCustomNavigation from '../../hooks/useCustomNavigation';
 import {routeNames} from '../../navigation/config/routeNames';
 import {stackNames} from '../../navigation/config/stackNames';
 
+import AttendanceService from '../../service/attendanceService';
+import AlertService from '../../service/alertService';
+import notifee, {AndroidImportance} from '@notifee/react-native';
+
+
 const HomeScreen = () => {
+  const [range, setRange] = useState(null);
+  const [fall, setFall] = useState(null);
+
   const navigation = useCustomNavigation();
+
+  useEffect(() => {
+    const unsubscribeKids = AttendanceService.getKidsCountListener(count => {
+      console.log('range kids listener===================');
+      AttendanceService.getAttendanceCount().then(attendanceCount => {
+        console.log('attendanceCount', attendanceCount);
+        console.log('count', count);
+        if (attendanceCount > count) {
+          //handleAddRrangeAlert('range');
+          displayNotification('Children Have Exited the Designated Area!');
+          displayRrangeAlert();
+        } else {
+          setRange(null);
+        }
+      });
+    });
+
+    return () => {
+      unsubscribeKids();
+    };
+  }, []);
+
+  async function displayNotification(message) {
+    // Create a notification channel
+    await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+      importance: AndroidImportance.HIGH,
+    });
+    // Display the notification
+    await notifee.displayNotification({
+      title: 'KidzCare',
+      body: message,
+      android: {
+        channelId: 'default',
+      },
+    });
+  }
+
+  const displayRrangeAlert = () => {
+    const now = new Date();
+    const formattedTime = now.toTimeString().split(' ')[0];
+    setRange(formattedTime);
+  };
+
+
+
   return (
     <ScrollViewWrapper contentContainerStyle={styles.scrollViewWrapper}>
       <Header />
@@ -32,7 +87,9 @@ const HomeScreen = () => {
         <Text style={styles.welcomeText}>
           Welcome Back <Text style={styles.welcomeUser}>Amisha!</Text>
         </Text>
+        
         <Spacer marginTop={28} />
+
         <Row style={styles.row}>
           <TouchableOpacity
             style={styles.actionButton}
@@ -133,27 +190,27 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   scrollViewWrapper: {
     backgroundColor: theme.white,
-  } as ViewStyle,
+  },
   welcomeText: {
     ...fontStyles.subTitle,
     color: theme.black,
     fontSize: 16,
     fontWeight: '500',
-  } as TextStyle,
+  },
   welcomeUser: {
     color: theme.primary,
-  } as TextStyle,
+  },
   alertContainer: {
     height: 95,
     backgroundColor: theme.grey,
     borderRadius: 16,
     justifyContent: 'center',
-  } as ViewStyle,
+  },
   row: {
     justifyContent: 'center',
     gap: 67,
     flex: 0,
-  } as ViewStyle,
+  },
   actionButton: {
     width: 141,
     height: 161,
@@ -162,21 +219,21 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-  } as ViewStyle,
+  },
   actionImage: {
     width: 100,
     height: 100,
-  } as ImageStyle,
+  },
   actionText: {
     ...fontStyles.subTitle,
     color: theme.black,
     fontSize: 12,
     fontWeight: '700',
-  } as TextStyle,
+  },
   loginButton: {
     height: 61,
     borderRadius: 10,
-  } as ViewStyle,
+  },
 });
 
 export default HomeScreen;

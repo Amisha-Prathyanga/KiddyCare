@@ -13,19 +13,19 @@ const RootNavigation = () => {
   return (
     <RootStackNavigator.Navigator>
       <RootStackNavigator.Group>
-        <RootStackNavigator.Screen
+        {/* <RootStackNavigator.Screen
           name={stackNames.welcomeStack}
           component={WelcomeScreen}
           //@ts-ignore
           options={screenOptions}
-        />
+        /> */}
         
-        <RootStackNavigator.Screen
+        {/* <RootStackNavigator.Screen
           name={stackNames.authStack}
           component={AuthStack}
           //@ts-ignore
           options={screenOptions}
-        />
+        /> */}
         <RootStackNavigator.Screen
           name={stackNames.tabStack}
           component={TabStack}
