@@ -7,6 +7,11 @@ import OnboardingScreen from '../../screens/onboarding/OnboardingScreen';
 import OnboardingScreenTwo from '../../screens/onboarding/OnboardingScreenTwo';
 import HomeScreen from '../../screens/home/HomeScreen';
 import DetectionHistory from '../../screens/detectionHistory/DetectionHistory';
+import DailySummaryReport from '../../components/Report/DailySummaryReport';
+import DailyFallSummaryReport from '../../components/Report/DailyFallSummaryReport';
+import EmotionSummaryReport from './../../components/Report/EmotionSummaryReport';
+import ReportNavigationPage from './../../screens/reportNav/ReportNavigationPage';
+import RangeDetectionReport from '../../components/Report/RangeDetectionReport';
 
 const HomeStackNavigator = createNativeStackNavigator();
 
@@ -25,6 +30,51 @@ const HomeStack = () => {
       <HomeStackNavigator.Screen
         name={routeNames.detectionHistory}
         component={DetectionHistory}
+        //@ts-ignore
+        options={{
+          ...screenOptions,
+          animation: 'slide_from_right',
+        }}
+      />
+      <HomeStackNavigator.Screen
+        name={routeNames.reportNavigationPage}
+        component={ReportNavigationPage}
+        //@ts-ignore
+        options={{
+          ...screenOptions,
+          animation: 'slide_from_right',
+        }}
+      />
+      <HomeStackNavigator.Screen
+        name={routeNames.dailySummaryReport}
+        component={DailySummaryReport}
+        //@ts-ignore
+        options={{
+          ...screenOptions,
+          animation: 'slide_from_right',
+        }}
+      />
+      <HomeStackNavigator.Screen
+        name={routeNames.dailyFallSummaryReport}
+        component={DailyFallSummaryReport}
+        //@ts-ignore
+        options={{
+          ...screenOptions,
+          animation: 'slide_from_right',
+        }}
+      />
+      <HomeStackNavigator.Screen
+        name={routeNames.emotionSummaryReport}
+        component={EmotionSummaryReport}
+        //@ts-ignore
+        options={{
+          ...screenOptions,
+          animation: 'slide_from_right',
+        }}
+      />
+      <HomeStackNavigator.Screen
+        name={routeNames.rangeDetectionReport}
+        component={RangeDetectionReport}
         //@ts-ignore
         options={{
           ...screenOptions,

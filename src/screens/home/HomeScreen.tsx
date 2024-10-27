@@ -21,6 +21,7 @@ import ButtonComponent from '../../components/common/ButtonComponent';
 import useCustomNavigation from '../../hooks/useCustomNavigation';
 import {routeNames} from '../../navigation/config/routeNames';
 import {stackNames} from '../../navigation/config/stackNames';
+import DailySummaryReport from '../../components/Report/DailySummaryReport';
 
 const HomeScreen = () => {
   const navigation = useCustomNavigation();
@@ -109,6 +110,16 @@ const HomeScreen = () => {
             />
             <Spacer marginTop={10} />
             <Text style={styles.actionText}>Mark Attendance</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => navigation.navigate(routeNames.reportNavigationPage)}>
+            <Image
+              source={require('../../assets/image/MarkAttendance.png')} // Add a report icon to your assets
+              style={styles.actionImage}
+            />
+            <Spacer marginTop={10} />
+            <Text style={styles.actionText}>Daily Report</Text>
           </TouchableOpacity>
         </Row>
         <Spacer marginTop={30} />

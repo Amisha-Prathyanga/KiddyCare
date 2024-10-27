@@ -7,4 +7,9 @@ export const routeNames = {
   markAttendance: 'Mark Attendance',
   newPage: 'newPage',
   detectionHistory: 'DetectionHistory',
+  dailySummaryReport: 'DailySummaryReport',
+  dailyFallSummaryReport: 'DailyFallSummaryReport',
+  emotionSummaryReport: 'EmotionSummaryReport',
+  rangeDetectionReport: 'RangeDetectionReport',
+  reportNavigationPage: 'ReportNavigationPage',
 };

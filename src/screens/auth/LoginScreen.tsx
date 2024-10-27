@@ -80,6 +80,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
           label="Password"
           leftIcon="lock-outline"
           placeholder="Enter your password"
+          secureTextEntry={true}
         />
         <Spacer marginTop={16} />
 
