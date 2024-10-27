@@ -1,10 +1,24 @@
 import {View, Text, StyleSheet} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import colors from '../../../thems';
 import {Image} from 'react-native-elements';
 import CustomButton from './CustomButton';
 
+import ImageModal from './ImageModal';
+
 const AlertData = ({type, time, image}) => {
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const imageUri = image;
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   return (
     <View style={styles.alert}>
       <View>
@@ -25,7 +39,8 @@ const AlertData = ({type, time, image}) => {
       </View>
       {type === 'range' ? (
         <View style={styles.buttonWrap}>
-          <CustomButton title={'Image'} />
+          <CustomButton title={'Image'} onPress={openModal} />
+          <ImageModal isVisible={isModalVisible} imageUri={imageUri} onClose={closeModal} />
         </View>
       ) : null}
     </View>
