@@ -7,4 +7,5 @@ export const routeNames = {
   markAttendance: 'Mark Attendance',
   newPage: 'newPage',
   detectionHistory: 'DetectionHistory',
+  rangeHistory: 'RangeHistory',
 };

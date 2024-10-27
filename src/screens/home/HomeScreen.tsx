@@ -70,7 +70,7 @@ const HomeScreen = () => {
           <TouchableOpacity
             style={styles.actionButton}
             onPress={() =>
-              navigation.navigate(routeNames.detectionHistory, {
+              navigation.navigate(routeNames.rangeHistory, {
                 isRange: true,
               })
             }>

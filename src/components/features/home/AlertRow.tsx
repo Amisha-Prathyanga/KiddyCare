@@ -51,7 +51,6 @@ const AlertRow: React.FC<AlertRowProps> = ({
           <Text
             style={[
               styles.alertText,
-
               {
                 color: theme.red,
               },

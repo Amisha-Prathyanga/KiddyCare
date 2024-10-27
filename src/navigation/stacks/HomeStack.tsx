@@ -7,6 +7,7 @@ import OnboardingScreen from '../../screens/onboarding/OnboardingScreen';
 import OnboardingScreenTwo from '../../screens/onboarding/OnboardingScreenTwo';
 import HomeScreen from '../../screens/home/HomeScreen';
 import DetectionHistory from '../../screens/detectionHistory/DetectionHistory';
+import RangeHistory from '../../screens/rangeHistory/RangeHistory';
 
 const HomeStackNavigator = createNativeStackNavigator();
 
@@ -25,6 +26,15 @@ const HomeStack = () => {
       <HomeStackNavigator.Screen
         name={routeNames.detectionHistory}
         component={DetectionHistory}
+        //@ts-ignore
+        options={{
+          ...screenOptions,
+          animation: 'slide_from_right',
+        }}
+      />
+      <HomeStackNavigator.Screen
+        name={routeNames.rangeHistory}
+        component={RangeHistory}
         //@ts-ignore
         options={{
           ...screenOptions,
