@@ -65,7 +65,7 @@ const AlertRow: React.FC<AlertRowProps> = ({
               : isRange
               ? 'sds'
               : isEmotion
-              ? 'Emotion Detected'
+              ? 'Negative emotion Detected'
               : 'Child out of range detected'}
           </Text>
           {isCry && cryReason && (
